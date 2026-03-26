@@ -7,7 +7,7 @@ interface Notes {
   content: string;
 }
 
-function Notes() {
+function NotesApp() {
   const [notes, setNotes] = useState<Notes[]>(()=>{
     let saveNotes = localStorage.getItem("Notes")
     return saveNotes ? JSON.parse(saveNotes) : []
@@ -139,4 +139,4 @@ function Notes() {
   );
 }
 
-export default Notes;
+export default NotesApp;
