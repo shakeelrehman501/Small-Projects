@@ -1,5 +1,5 @@
 import { Edit, Plus, RefreshCcw, Trash, X } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 interface Task {
   id: number;
@@ -15,10 +15,15 @@ function TodoList() {
   });
   const [editTask, setEditTask] = useState<number | null>(null);
   const [filter, setFilter] = useState<string>("All");
+  const taskRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     localStorage.setItem("Save Task", JSON.stringify(tasks));
   }, [tasks]);
+
+  useEffect(() => {
+  taskRef.current?.focus()
+  }, [editTask])
 
   function addTask() {
     if (!input.trim()) return;
@@ -33,6 +38,7 @@ function TodoList() {
       setTasks([...tasks, { id: Date.now(), text: input, completed: false }]);
     }
     setInput("");
+    taskRef.current?.focus()
   }
 
   function changeFunc(id: number) {
@@ -71,6 +77,7 @@ function TodoList() {
         <div className="flex gap-3">
           <input
             type="text"
+            ref={taskRef}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && addTask()}
